@@ -70,3 +70,40 @@ dd { margin: 2px 0 0; padding-bottom: 10px; border-bottom: 1px solid #e1e8f1; wh
 .footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; padding: 20px 0 28px; border-top: 1px solid #d5dfec; color: #52657a; font-size: .9rem; }
 .footer p { margin: 0; }
 .footer a { display: inline-flex; align-items: center; min-height: 44px; }
+/* 4주차: 반응형 배치 */
+@media (max-width: 1100px) {
+  .hero { gap: 24px; padding: 36px 0; }
+  .card { padding: 24px; }
+}
+@media (max-width: 768px) {
+  body { font-size: .95rem; }
+  .wrap { width: calc(100% - 32px); }
+  .header-inner { gap: 4px 20px; }
+  nav { width: 100%; flex-direction: column; gap: 0; }
+  .actions.compact { flex-direction: column; align-items: stretch; }
+  .actions.compact button { width: 100%; }
+  .hero { grid-template-columns: 1fr; gap: 20px; padding: 28px 0; }
+  .hero img { width: 240px; }
+  h1 { font-size: 2.2rem; }
+  .feature-list, .field-row { grid-template-columns: 1fr; }
+  .field-row { gap: 0; }
+  .card { padding: 20px; }
+  .progress { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 390px) {
+  .wrap { width: calc(100% - 24px); }
+  .header-inner { align-items: flex-start; }
+  nav { gap: 4px 12px; font-size: .9rem; }
+  .card, .notice { padding: 16px; }
+  h2 { font-size: 1.3rem; }
+  .tabs { gap: 6px; }
+  .tabs button { flex: 1 1 auto; padding: 10px; font-size: .9rem; }
+  .actions { flex-direction: column; align-items: stretch; }
+  .progress { gap: 6px; font-size: .9rem; }
+}
+@media (max-width: 320px) {
+  .wrap { width: calc(100% - 20px); }
+  .card, .notice { padding: 12px; }
+  .hero .button { width: 100%; padding: 10px; }
+  .tabs button { flex-basis: 100%; }
+}
