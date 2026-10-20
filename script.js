@@ -108,3 +108,81 @@ function updateMemoCount() {
   memoCount.classList.toggle('near-limit', count >= 90);
 }
 memoInput.addEventListener('input', updateMemoCount);
+
+// 7주차: 시작 → 입력·선택 → 확인 → 완료
+const deliveryForm = document.querySelector('#delivery-form');
+const pickup = document.querySelector('#pickup');
+const destination = document.querySelector('#destination');
+const formError = document.querySelector('#form-error');
+const finishButton = document.querySelector('#finish-button');
+const stepIds = ['start-step', 'input-step', 'review-step', 'complete-step'];
+const headingIds = ['start-title', 'input-title', 'review-title', 'complete-title'];
+const progressItems = document.querySelectorAll('#progress li');
+const typeLabels = { document: '서류', parcel: '소형 물품' };
+let currentStep = 0;
+
+function showStep(nextStep) {
+  stepIds.forEach(function(id, index) {
+    document.getElementById(id).hidden = index !== nextStep;
+    if (index === nextStep) progressItems[index].setAttribute('aria-current', 'step');
+    else progressItems[index].removeAttribute('aria-current');
+  });
+  currentStep = nextStep;
+  document.getElementById(headingIds[nextStep]).focus();
+}
+function showFormError(message, field) {
+  formError.textContent = message;
+  formError.hidden = false;
+  field.focus();
+}
+
+document.querySelector('#start-button').addEventListener('click', function() { showStep(1); });
+document.querySelector('#back-start').addEventListener('click', function() { showStep(0); });
+document.querySelector('#back-input').addEventListener('click', function() { showStep(1); });
+
+deliveryForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  formError.hidden = true;
+  if (!typeLabels[deliveryType.value]) {
+    showFormError('배송 종류를 선택해 주세요.', deliveryType);
+    return;
+  }
+  if (pickup.value === '') {
+    showFormError('출발 지역을 선택해 주세요.', pickup);
+    return;
+  }
+  if (destination.value === '') {
+    showFormError('도착 지역을 선택해 주세요.', destination);
+    return;
+  }
+  if (!checkEmail()) {
+    showFormError('이메일 안내를 확인하고 예시 주소로 수정해 주세요.', emailInput);
+    return;
+  }
+  document.querySelector('#review-type').textContent = typeLabels[deliveryType.value];
+  document.querySelector('#review-route').textContent = pickup.value + ' → ' + destination.value;
+  document.querySelector('#review-email').textContent = emailInput.value.trim();
+  document.querySelector('#review-memo').textContent = memoInput.value.trim() || '요청 사항 없음';
+  showStep(2);
+});
+
+finishButton.addEventListener('click', function() {
+  if (currentStep !== 2) return;
+  finishButton.disabled = true;
+  document.querySelector('#complete-summary').textContent = typeLabels[deliveryType.value] + ' · ' + pickup.value + ' → ' + destination.value + ' · ' + emailInput.value.trim() + ' 내용을 확인하고 연습을 마쳤습니다.';
+  showStep(3);
+});
+
+document.querySelector('#restart-button').addEventListener('click', function() {
+  deliveryForm.reset();
+  resetEmail(false);
+  updateTypeHint();
+  updateMemoCount();
+  formError.textContent = '';
+  formError.hidden = true;
+  ['review-type', 'review-route', 'review-email', 'review-memo', 'complete-summary'].forEach(function(id) {
+    document.getElementById(id).textContent = '';
+  });
+  finishButton.disabled = false;
+  showStep(0);
+});

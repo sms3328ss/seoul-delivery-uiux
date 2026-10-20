@@ -63,8 +63,16 @@
     </section>
     <section id="practice" class="card" aria-labelledby="practice-title">
       <h2 id="practice-title">배송 안내 연습</h2>
-      <p class="muted">예시 정보로 배송 안내 입력을 연습하는 영역입니다.</p>
-      <div id="input-step">
+      <p class="muted">목표: 정보를 입력하고 확인한 뒤 연습 완료 화면에 도달하기</p>
+      <ol id="progress" class="progress" aria-label="현재 진행 단계">
+        <li aria-current="step">1. 시작</li><li>2. 입력·선택</li><li>3. 확인</li><li>4. 완료</li>
+      </ol>
+      <div id="start-step">
+        <h3 id="start-title" tabindex="-1">어떤 정보를 입력하나요?</h3>
+        <p>배송 종류, 출발·도착 지역, 예시 이메일을 입력합니다. 요청 사항은 선택입니다.</p>
+        <button id="start-button" type="button">연습 시작하기</button>
+      </div>
+      <div id="input-step" hidden>
         <h3 id="input-title" tabindex="-1">배송 정보 입력</h3>
         <p class="muted">별표(*) 항목은 꼭 입력하거나 선택해 주세요.</p>
         <form id="delivery-form" novalidate>
@@ -88,7 +96,28 @@
           <textarea id="memo" name="memo" rows="3" maxlength="100" placeholder="예: 상자가 눌리지 않게 조심해 주세요." aria-describedby="memo-count"></textarea>
           <p id="memo-count" class="counter" aria-live="polite">0 / 100자</p>
           <p id="form-error" class="hint error" role="alert" hidden></p>
+          <div class="actions">
+            <button type="submit">입력 내용 확인하기</button>
+            <button id="back-start" type="button" class="secondary">시작 화면으로</button>
+          </div>
         </form>
+      </div>
+      <div id="review-step" hidden>
+        <h3 id="review-title" tabindex="-1">입력 내용 확인</h3>
+        <dl>
+          <dt>배송 종류</dt><dd id="review-type"></dd>
+          <dt>이동 지역</dt><dd id="review-route"></dd>
+          <dt>예시 이메일</dt><dd id="review-email"></dd>
+          <dt>요청 사항</dt><dd id="review-memo"></dd>
+        </dl>
+        <p class="hint neutral">틀린 내용이 있다면 이전 단계에서 수정해 주세요. 실제 배송 접수는 되지 않습니다.</p>
+        <div class="actions"><button id="finish-button" type="button">연습 완료하기</button><button id="back-input" type="button" class="secondary">이전 단계로 수정</button></div>
+      </div>
+      <div id="complete-step" hidden>
+        <h3 id="complete-title" tabindex="-1">연습을 완료했습니다</h3>
+        <p id="complete-summary" class="hint success" role="status"></p>
+        <p>실제 배송 접수나 이메일 발송은 발생하지 않았습니다.</p>
+        <button id="restart-button" type="button">처음부터 다시 시작</button>
       </div>
     </section>
     <aside id="notice" class="notice" aria-labelledby="notice-title">
