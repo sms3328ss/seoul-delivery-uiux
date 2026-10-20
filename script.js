@@ -57,3 +57,54 @@ emailInput.addEventListener('keydown', function(event) {
     checkEmail();
   }
 });
+
+// 6주차: click, input, change 이벤트와 탭 3개
+const tabButtons = [...document.querySelectorAll('[role="tab"]')];
+function selectTab(selected) {
+  tabButtons.forEach(function(button) {
+    const active = button === selected;
+    button.setAttribute('aria-selected', String(active));
+    button.classList.toggle('active', active);
+    button.tabIndex = active ? 0 : -1;
+    document.getElementById(button.getAttribute('aria-controls')).hidden = !active;
+  });
+}
+tabButtons.forEach(function(button, index) {
+  button.addEventListener('click', function() { selectTab(button); });
+  button.addEventListener('keydown', function(event) {
+    let next = index;
+    if (event.key === 'ArrowRight') next = (index + 1) % tabButtons.length;
+    else if (event.key === 'ArrowLeft') next = (index + tabButtons.length - 1) % tabButtons.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = tabButtons.length - 1;
+    else return;
+    event.preventDefault();
+    selectTab(tabButtons[next]);
+    tabButtons[next].focus();
+  });
+});
+
+const deliveryType = document.querySelector('#delivery-type');
+const typeHint = document.querySelector('#type-hint');
+function updateTypeHint() {
+  if (deliveryType.value === 'document') {
+    typeHint.textContent = '서류는 봉투에 넣고 젖지 않도록 포장하는 상황으로 연습합니다.';
+    typeHint.className = 'hint document';
+  } else if (deliveryType.value === 'parcel') {
+    typeHint.textContent = '소형 물품은 상자에 넣고 빈 공간을 채워 포장하는 상황으로 연습합니다.';
+    typeHint.className = 'hint parcel';
+  } else {
+    typeHint.textContent = '종류를 고르면 준비 안내가 표시됩니다.';
+    typeHint.className = 'hint neutral';
+  }
+}
+deliveryType.addEventListener('change', updateTypeHint);
+
+const memoInput = document.querySelector('#memo');
+const memoCount = document.querySelector('#memo-count');
+function updateMemoCount() {
+  const count = memoInput.value.length;
+  memoCount.textContent = count + ' / 100자';
+  memoCount.classList.toggle('near-limit', count >= 90);
+}
+memoInput.addEventListener('input', updateMemoCount);
