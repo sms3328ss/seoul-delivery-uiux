@@ -17,11 +17,13 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top">서울배송</a>
-      <nav aria-label="주요 메뉴">
-        <a href="#service">서비스 소개</a>
-        <a href="#practice">이용 연습</a>
-        <a href="#notice">안내 사항</a>
-      </nav>
+      <button id="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false" hidden>메뉴 열기</button>
+      <nav id="main-nav" aria-label="주요 메뉴"><ul>
+        <li><a href="#service" aria-current="location">서비스 소개</a></li>
+        <li><a href="#practice">배송 안내 연습</a></li>
+        <li><a href="#history">배송 연습 내역</a></li>
+        <li><a href="#notice">이용 전 안내</a></li>
+      </ul></nav>
     </div>
   </header>
   <main id="main" class="wrap">
@@ -36,7 +38,7 @@
       <img src="delivery-box.svg" width="280" height="200" alt="상자와 두 지점을 잇는 배송 경로 그림">
     </section>
     <section id="service" class="card" aria-labelledby="service-title">
-      <h2 id="service-title">서울배송 알아보기</h2>
+      <h2 id="service-title">서비스 소개</h2>
       <div class="tabs" role="tablist" aria-label="서비스 안내">
         <button id="tab-intro" type="button" role="tab" aria-selected="true" aria-controls="panel-intro" class="active">서비스 소개</button>
         <button id="tab-order" type="button" role="tab" aria-selected="false" aria-controls="panel-order" tabindex="-1">이용 순서</button>
@@ -67,24 +69,30 @@
       <ol id="progress" class="progress" aria-label="현재 진행 단계">
         <li aria-current="step">1. 시작</li><li>2. 입력·선택</li><li>3. 확인</li><li>4. 완료</li>
       </ol>
+      <form id="delivery-form" novalidate>
       <div id="start-step">
         <h3 id="start-title" tabindex="-1">어떤 정보를 입력하나요?</h3>
-        <p>배송 종류, 출발·도착 지역, 예시 이메일을 입력합니다. 요청 사항은 선택입니다.</p>
+        <p>배송 종류, 출발·도착 지역, 예시 이메일과 5자 이상의 배송 연습 제목을 입력합니다. 특별 취급을 선택하면 포장 방법도 입력합니다.</p>
         <button id="start-button" type="button">연습 시작하기</button>
       </div>
       <div id="input-step" hidden>
         <h3 id="input-title" tabindex="-1">배송 정보 입력</h3>
         <p class="muted">별표(*) 항목은 꼭 입력하거나 선택해 주세요.</p>
-        <form id="delivery-form" novalidate>
+        <div class="form-fields">
+          <label for="delivery-title">배송 연습 제목 *</label>
+          <input id="delivery-title" name="title" type="text" required minlength="5" maxlength="40" autocomplete="off" aria-describedby="title-help title-status" placeholder="예: 마포 서류 전달 연습">
+          <p id="title-help" class="hint neutral">실제 이름·주소 대신 연습을 구별할 제목을 5~40자로 적어 주세요. 앞뒤 공백은 제외합니다.</p>
+          <p id="title-status" class="counter" aria-live="polite">0 / 40자 · 최소 5자 필요</p>
           <label for="delivery-type">배송 종류 *</label>
-          <select id="delivery-type" name="deliveryType" required>
+          <select id="delivery-type" name="deliveryType" aria-describedby="type-hint" required>
             <option value="">종류를 선택하세요</option><option value="document">서류</option><option value="parcel">소형 물품</option>
           </select>
           <p id="type-hint" class="hint neutral" aria-live="polite">종류를 고르면 준비 안내가 표시됩니다.</p>
           <div class="field-row">
-            <div><label for="pickup">출발 지역 *</label><select id="pickup" name="pickup" required><option value="">출발 지역 선택</option><option>마포구</option><option>성동구</option><option>강남구</option></select></div>
-            <div><label for="destination">도착 지역 *</label><select id="destination" name="destination" required><option value="">도착 지역 선택</option><option>마포구</option><option>성동구</option><option>강남구</option></select></div>
+            <div><label for="pickup">출발 지역 *</label><select id="pickup" name="pickup" aria-describedby="region-help" required><option value="">출발 지역 선택</option><option>마포구</option><option>성동구</option><option>강남구</option></select></div>
+            <div><label for="destination">도착 지역 *</label><select id="destination" name="destination" aria-describedby="region-help" required><option value="">도착 지역 선택</option><option>마포구</option><option>성동구</option><option>강남구</option></select></div>
           </div>
+          <p id="region-help" class="hint neutral">서울의 출발·도착 구를 각각 선택하세요. 같은 구 안의 이동도 연습할 수 있습니다.</p>
           <label for="email">배송 안내용 예시 이메일 *</label>
           <input id="email" name="email" type="email" inputmode="email" maxlength="100" autocomplete="off" placeholder="student@example.com" aria-describedby="email-status" required>
           <div class="actions compact">
@@ -92,6 +100,14 @@
             <button id="email-reset" type="button" class="secondary">이메일 초기화</button>
           </div>
           <p id="email-status" class="hint neutral" role="status">실제 발송 없이 이메일 형식만 확인합니다.</p>
+          <label class="choice" for="special-care"><input id="special-care" name="specialCare" type="checkbox" aria-controls="care-fields" aria-describedby="care-help"> 특별 취급 연습 추가</label>
+          <p id="care-help" class="hint neutral">체크하면 포장 방법 입력이 열리고 필수가 됩니다. 해제하면 숨기고 저장에서 제외합니다.</p>
+          <div id="care-fields" hidden>
+            <label for="care-note">특별 포장 방법 *</label>
+            <textarea id="care-note" name="careNote" rows="2" minlength="5" maxlength="80" required disabled aria-describedby="care-note-help care-status" placeholder="예: 완충재로 모서리를 감싸 주세요"></textarea>
+            <p id="care-note-help" class="hint neutral">파손 방지를 위한 포장 방법을 5~80자로 적어 주세요.</p>
+            <p id="care-status" class="counter" aria-live="polite">0 / 80자 · 최소 5자 필요</p>
+          </div>
           <label for="memo">요청 사항 <span class="muted">(선택, 100자 이내)</span></label>
           <textarea id="memo" name="memo" rows="3" maxlength="100" placeholder="예: 상자가 눌리지 않게 조심해 주세요." aria-describedby="memo-count"></textarea>
           <p id="memo-count" class="counter" aria-live="polite">0 / 100자</p>
@@ -100,30 +116,53 @@
             <button type="submit">입력 내용 확인하기</button>
             <button id="back-start" type="button" class="secondary">시작 화면으로</button>
           </div>
-        </form>
+        </div>
       </div>
       <div id="review-step" hidden>
         <h3 id="review-title" tabindex="-1">입력 내용 확인</h3>
         <dl>
+          <dt>연습 제목</dt><dd id="review-title-value"></dd>
+          <dt>특별 취급</dt><dd id="review-care"></dd>
           <dt>배송 종류</dt><dd id="review-type"></dd>
           <dt>이동 지역</dt><dd id="review-route"></dd>
           <dt>예시 이메일</dt><dd id="review-email"></dd>
           <dt>요청 사항</dt><dd id="review-memo"></dd>
         </dl>
         <p class="hint neutral">틀린 내용이 있다면 이전 단계에서 수정해 주세요. 실제 배송 접수는 되지 않습니다.</p>
-        <div class="actions"><button id="finish-button" type="button">연습 완료하기</button><button id="back-input" type="button" class="secondary">이전 단계로 수정</button></div>
+        <label class="choice" for="simulate-failure"><input id="simulate-failure" type="checkbox" aria-describedby="failure-help"> 저장 실패 시뮬레이션 (수업용)</label>
+        <p id="failure-help" class="hint neutral">체크하면 실제 서버 오류가 아니라 데모 오류를 발생시킵니다. 해제 후 같은 입력으로 재시도할 수 있습니다.</p>
+        <p id="save-status" class="hint neutral" role="status" tabindex="-1">최종 확정 시 이 브라우저의 연습 내역에 저장합니다.</p>
+        <div class="actions"><button id="finish-button" type="submit">확정하고 연습 내역 저장</button><button id="back-input" type="button" class="secondary">이전 단계로 수정</button></div>
       </div>
       <div id="complete-step" hidden>
         <h3 id="complete-title" tabindex="-1">연습을 완료했습니다</h3>
         <p id="complete-summary" class="hint success" role="status"></p>
         <p>실제 배송 접수나 이메일 발송은 발생하지 않았습니다.</p>
+        <a class="button" href="#history">배송 연습 내역 보기</a>
         <button id="restart-button" type="button">처음부터 다시 시작</button>
       </div>
+      </form>
+    </section>
+    <section id="history" class="card" aria-labelledby="history-title">
+      <h2 id="history-title">배송 연습 내역</h2>
+      <p>실제 접수가 아닌, 이 브라우저에서 직접 완료한 연습만 표시합니다. 최대 50건이며 새로고침 후에도 남습니다.</p>
+      <div id="history-filters" class="filters" role="group" aria-label="배송 연습 내역 필터">
+        <button type="button" data-filter="all" aria-pressed="true">전체</button>
+        <button type="button" data-filter="document" aria-pressed="false">서류</button>
+        <button type="button" data-filter="parcel" aria-pressed="false">소형 물품</button>
+        <button type="button" data-filter="care" aria-pressed="false">특별 취급</button>
+      </div>
+      <p id="storage-status" class="hint error" role="status" hidden></p>
+      <p id="result-count" role="status"></p>
+      <p id="history-empty" class="hint neutral"></p>
+      <ul id="history-list" class="history-list"></ul>
+      <button id="clear-history" type="button" class="secondary">저장된 연습 내역 전체 삭제</button>
+      <p class="muted">삭제하면 복구할 수 없습니다. 작성 중인 폼은 지워지지 않습니다.</p>
     </section>
     <aside id="notice" class="notice" aria-labelledby="notice-title">
       <h2 id="notice-title">이용 전 안내</h2>
       <p>서울배송은 수업 과제를 위한 가상 서비스입니다. 실제 업체·운영 서버와 연결되어 있지 않습니다.</p>
-      <p>입력값은 화면에서만 처리하고 저장하거나 외부로 전송하지 않습니다. 실제 개인정보 대신 예시 값을 사용해 주세요.</p>
+      <p>확정한 제목·종류·지역·예시 이메일·요청 사항·특별 포장 방법·저장 시각은 이 브라우저의 localStorage에 저장됩니다. 외부로 전송하지 않습니다. 새로고침하면 작성 중인 폼은 사라지지만 저장 내역은 남습니다. 내역 전체 삭제 또는 브라우저 사이트 데이터 삭제로 지울 수 있습니다. 공용 기기에서는 사용 후 삭제하고 실제 개인정보 대신 예시 값을 사용해 주세요.</p>
     </aside>
   </main>
   <footer class="wrap footer"><p>서울배송 · HTML / CSS / JavaScript 학습 프로젝트</p><a href="#top">맨 위로</a></footer>

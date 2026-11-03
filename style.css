@@ -107,3 +107,27 @@ dd { margin: 2px 0 0; padding-bottom: 10px; border-bottom: 1px solid #e1e8f1; wh
   .hero .button { width: 100%; padding: 10px; }
   .tabs button { flex-basis: 100%; }
 }
+
+/* 9주차: 조건부 폼, 텍스트 피드백 */
+.choice { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid #c5d4e5; border-radius: 6px; background: #f5f9ff; }
+.choice input { flex: 0 0 22px; width: 22px; min-height: 22px; height: 22px; margin: 3px 0; accent-color: #1e5da6; }
+#care-fields { padding: 4px 18px 12px; border-left: 4px solid #1e5da6; background: #f5f9ff; }
+#care-fields textarea:disabled { background: #e2e8ef; }
+form[aria-busy="true"] #review-step { border-top: 3px solid #1e5da6; padding-top: 16px; }
+/* 10주차: 메뉴의 현재 위치와 필터 선택 상태 */
+#main-nav ul { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 0; list-style: none; }
+#main-nav a { padding: 6px 10px; border-radius: 5px; }
+#main-nav a[aria-current="location"] { color: #174f91; background: #eaf2fd; text-decoration: underline; text-decoration-thickness: 2px; font-weight: 750; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+.filters button { color: #174f91; background: #fff; }
+.filters button[aria-pressed="true"] { color: #fff; background: #1e5da6; text-decoration: underline; text-underline-offset: 4px; border-width: 2px; }
+.history-list { padding: 0; list-style: none; }
+.history-list li { margin-bottom: 12px; padding: 16px; border: 1px solid #c5d4e5; border-radius: 6px; }
+.history-list summary { min-height: 44px; padding: 8px 4px; cursor: pointer; color: #174f91; font-weight: 700; }
+.history-list details[open] summary { border-bottom: 1px solid #d5dfec; }
+@media (max-width: 768px) {
+  #main-nav ul { width: 100%; flex-direction: column; gap: 4px; }
+  #main-nav a { width: 100%; }
+  #menu-toggle { margin-left: auto; }
+  .filters button { flex: 1 1 40%; }
+}
